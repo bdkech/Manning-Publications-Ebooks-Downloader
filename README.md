@@ -89,14 +89,10 @@ zipinfo Manning_2020-09-13/AWS_Security/AWS_Security.zip
 find Manning_2020-09-13/ -name '*.zip' -execdir unzip -o {} \; -delete
 ```
 
-## Stars
-
-[![Stargazers over time](https://starchart.cc/luckylittle/Manning-Publications-Ebooks-Downloader.svg)](https://starchart.cc/luckylittle/Manning-Publications-Ebooks-Downloader)
-
 ## Contributors
 
 Lucian Maly <<lucian@redhat.com>>
-
+Bobak Kechavarzi
 ---
 
 _Last Update: Tue Sep 15 12:30:33 UTC 2020_
