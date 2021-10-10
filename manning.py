@@ -92,14 +92,15 @@ def get_list():
         time.sleep(4)
         driver.get('https://www.manning.com/dashboard/index?filter=all&order=purchaseDate&sort=asc')
         page_source = driver.page_source
+        print(page_source)
         # PURPOSE: Parse the dashboard with up to 999 products
         soup = BeautifulSoup(page_source, 'html.parser')
         div_container = soup.find('table', {'id': 'productTable'})
+        print(div_container)
         for product in div_container.find_all('tr', {'class': 'license-row'}):
             # EXAMPLE: Terraform in Action
             title = str(product.find(
                 'div', {'class': 'product-title'}).text.strip())
-            print(title)
             # PURPOSE: Find all the restrictedDownloadIds and create a complete payload
             for downloadSelection in product.find_all('div', {'class': 'download-selection'}):
                 hidden = downloadSelection.find_all(
