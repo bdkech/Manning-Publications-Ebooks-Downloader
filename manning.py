@@ -96,7 +96,6 @@ def get_list():
         # PURPOSE: Parse the dashboard with up to 999 products
         soup = BeautifulSoup(page_source, 'html.parser')
         div_container = soup.find('table', {'id': 'productTable'})
-        print(div_container)
         for product in div_container.find_all('tr', {'class': 'license-row'}):
             # EXAMPLE: Terraform in Action
             title = str(product.find(
