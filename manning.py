@@ -23,13 +23,14 @@ from selenium.webdriver.firefox.options import Options
 def main():
     pass
 
-def _create_folder(folder):
+def _create_folder(folder=''):
     """
     Creates folder at the path for downloads
     """
 
     datetime_object = datetime.date.today()
-    folder = 'Manning_' + str(datetime_object)
+    if folder == '':
+        folder = 'Manning_' + str(datetime_object)
     try:
         os.mkdir(folder)
         print('Created folder', folder)
@@ -53,14 +54,16 @@ def download_books(username, password, folder):
     sortby = 'lastUpdated'
 
     options = Options()
-    options.headless = True
-
+    #options.headless = True
+    # There are some strange mime types because...well
+    # thats what they show up as on manning
+    mime_types = "application/msword, application/csv, application/ris, text/csv, image/png, application/pdf, text/html, text/plain, application/zip, application/x-zip, application/x-zip-compressed, application/download, application/octet-stream, application/pdf,application/vnd.adobe.xfdf,application/vnd.fdf,application/vnd.adobe.xdp+xml, x-unknown/pdf, invalid/pdf"
     fp=webdriver.FirefoxProfile()
     fp.set_preference("browser.download.folderList",2)
     fp.set_preference("browser.download.dir", folder)
     fp.set_preference("browser.download.panel.shown", False)
-    fp.set_preference("browser.helperApps.neverAsk.openFile","text/csv,application/vnd.ms-excel")
-    fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/msword, application/csv, application/ris, text/csv, image/png, application/pdf, text/html, text/plain, application/zip, application/x-zip, application/x-zip-compressed, application/download, application/octet-stream");
+    fp.set_preference("browser.helperApps.neverAsk.openFile",mime_types)
+    fp.set_preference("browser.helperApps.neverAsk.saveToDisk", mime_types);
     fp.set_preference("browser.download.manager.showWhenStarting", False);
     fp.set_preference("browser.download.manager.alertOnEXEOpen", False);
     fp.set_preference("browser.download.manager.focusWhenStarting", False);
@@ -89,7 +92,6 @@ def download_books(username, password, folder):
 
     rows = driver.find_elements_by_tag_name('tr')
     for row in rows:
-        #print(row.find_elements_by_class_name('dropdown-toggle'))
         pdf_links = row.find_elements_by_partial_link_text('pdf')
         for pdf_link in pdf_links:
             pdf_link.click()
@@ -98,7 +100,9 @@ def download_books(username, password, folder):
                 dl_link[0].click()
             else:
                 print("issues with link")
-
+    # some extra time to let last
+    # download finish
+    time.sleep(10)
 
 if __name__ == '__main__':
     main()
